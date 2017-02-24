@@ -13,8 +13,8 @@ var fv_player_playlist_subtitles_box_template;
 var fv_wp_fp_shortcode;
 var fv_player_preview_single = -1;
 var fv_player_preview_window;
-
-
+var fv_player_shortcode_preview;
+var fv_wp_flowplayer_dialog_resize_height_record;
 
 var fv_player_shortcode_preview_unsupported = false;
 
@@ -149,7 +149,7 @@ jQuery(document).ready(function($){
     $(e.target).parents('[data-index]').remove();
     jQuery('.fv-player-tab-video-files table[data-index=' + index + ']').remove();
     jQuery('.fv-player-tab-subtitles table[data-index=' + index + ']').remove();
-    if(!jQuery('.fv-player-tab-subtitles table[data-index').length){
+    if(!jQuery('.fv-player-tab-subtitles table[data-index]').length){
       fv_flowplayer_playlist_add();
       jQuery('.fv-player-tab-playlist tr td').click();
     }
@@ -170,7 +170,7 @@ jQuery(document).ready(function($){
         var index = $(this).data('index');
         items.push({
           items : jQuery('.fv-player-tab-video-files table[data-index=' + index + ']').clone(),
-          subs : jQuery('.fv-player-tab-subtitles table[data-index=' + index + ']').clone(),
+          subs : jQuery('.fv-player-tab-subtitles table[data-index=' + index + ']').clone()
         })
         jQuery('.fv-player-tab-video-files table[data-index=' + index + ']').remove();
         jQuery('.fv-player-tab-subtitles table[data-index=' + index + ']').remove();
@@ -225,7 +225,7 @@ jQuery(document).ready(function($){
 
       //When a file is selected, grab the URL and set it as the text field's value
       fv_flowplayer_uploader.on('select', function() {
-          attachment = fv_flowplayer_uploader.state().get('selection').first().toJSON();
+          var attachment = fv_flowplayer_uploader.state().get('selection').first().toJSON();
 
           $('.fv_flowplayer_target').val(attachment.url);
           $('.fv_flowplayer_target').removeClass('fv_flowplayer_target' );
@@ -411,7 +411,7 @@ function fv_wp_flowplayer_init() {
    */ 
   jQuery('#fv-player-shortcode-editor a[data-tab=fv-player-tab-playlist]').hide();
   jQuery('#fv-player-shortcode-editor a[data-tab=fv-player-tab-video-files]').trigger('click');
-  jQuery('.nav-tab').show;
+  jQuery('.nav-tab').show();
   
   //hide empy tabs hide tabs
   jQuery('#fv-player-shortcode-editor-editor').attr('class','is-singular');
@@ -1213,7 +1213,7 @@ function fv_player_refresh_tabs(){
   var visibleTabs = 0;
   jQuery('#fv-player-shortcode-editor-editor a[data-tab]').removeClass('fv_player_interface_hide');
   jQuery('#fv-player-shortcode-editor-editor .fv-player-tabs > .fv-player-tab').each(function(){   
-    var bHideTab = true
+    var bHideTab = true;
     jQuery(this).find('tr:not(.fv_player_actions_end-toggle):not(.submit-button-wrapper)').each(function(){
       if(jQuery(this).css('display') === 'table-row'){
         bHideTab = false;
@@ -1313,7 +1313,7 @@ function fv_wp_flowplayer_shortcode_parse_arg( sShortcode, sArg, bHTML, sCallbac
 
 
 function fv_wp_flowplayer_subtitle_parse_arg( args ) {
-  var input = ('fv_wp_flowplayer_subtitle_parse_arg',args);
+  var input = ('fv_wp_flowplayer_subtitle_parse_arg', args);
   var aLang = input[0].match(/subtitles_([a-z][a-z])/);
   fv_flowplayer_language_add( input[1], aLang[1] );
 }
