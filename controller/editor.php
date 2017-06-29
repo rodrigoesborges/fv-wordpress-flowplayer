@@ -63,11 +63,15 @@ add_action( 'edit_form_after_editor', 'fv_wp_flowplayer_edit_form_after_editor' 
 
 function fv_wp_flowplayer_edit_form_after_editor( ) {
   global $fv_fp;
+  if( isset($fv_fp->editor_loaded) ) return;
+  
   if( isset($fv_fp->conf["interface"]['shortcode_editor_old']) && $fv_fp->conf["interface"]['shortcode_editor_old'] == 'true' ) {
     include dirname( __FILE__ ) . '/../view/wizard.old.php';
   } else {
     include dirname( __FILE__ ) . '/../view/wizard.php';
   }
+  
+  $fv_fp->editor_loaded = true;
 }
 
 //  allow .vtt subtitle files
