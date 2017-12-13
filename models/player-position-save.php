@@ -12,6 +12,7 @@ class FV_Player_Position_Save {
     // we only use the first source to check for stored position,
     // since other sources would be alternatives (in quality, etc.)
     if (
+      is_user_logged_in() &&
       is_array($aItemArray) &&
       isset($aItemArray['sources']) &&
       isset($aItemArray['sources'][0]) &&
