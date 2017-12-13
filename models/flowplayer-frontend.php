@@ -151,9 +151,9 @@ class flowplayer_frontend extends flowplayer
       $wistia = $aWistia[1];
       $player_type = 'wistia';      
     }
-    
+
     if( !isset($this->aCurArgs['liststyle']) || empty($this->aCurArgs['liststyle']) ){
-      $this->aCurArgs['liststyle'] = $this->_get_option('liststyle');     
+      $this->aCurArgs['liststyle'] = $this->_get_option('liststyle');
     }
     
         
@@ -445,6 +445,10 @@ class flowplayer_frontend extends flowplayer
         
         if( isset($this->aCurArgs['live']) && $this->aCurArgs['live'] == 'true' ) {
           $attributes['data-live'] = 'true';
+        }
+
+        if( isset($this->aCurArgs['saveposition']) && $this->aCurArgs['saveposition'] == '1' ) {
+          $attributes['data-save-position'] = 'true';
         }
         
         $playlist = '';
