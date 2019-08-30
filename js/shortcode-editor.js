@@ -1159,6 +1159,7 @@ function fv_wp_flowplayer_edit() {
           jQuery('.fv-player-tab-video-files table').remove();
 
           jQuery('#player_id_top_text').html('ID: ' + result[1]);
+          jQuery('.fv-player-tab-embeds table tr td').html(response['embeds']);
 
           if (!$id_player_element.length) {
             // add player ID as a hidden field
