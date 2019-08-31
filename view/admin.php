@@ -189,6 +189,7 @@ function fv_flowplayer_admin_default_options() {
 					<table class="form-table2">
             
             <?php $fv_fp->_get_checkbox(__('Autoplay', 'fv-wordpress-flowplayer'), 'autoplay', __('We make sure only one video per page autoplays. Note that mobile devices don\'t support autoplay.' , 'fv-wordpress-flowplayer') ); ?>
+            <?php $fv_fp->_get_checkbox(__('Preload', 'fv-wordpress-flowplayer'), 'preload' ); ?>
             <?php $fv_fp->_get_checkbox(__('Auto Buffering', 'fv-wordpress-flowplayer'), 'auto_buffering', __('Works for first 2 videos on the page only, to preserve your bandwidth.', 'fv-wordpress-flowplayer') ); ?>
             <?php $fv_fp->_get_checkbox(__('Controlbar Always Visible', 'fv-wordpress-flowplayer'), 'show_controlbar' ); ?>
 
@@ -833,6 +834,7 @@ function fv_flowplayer_admin_interface_options() {
           <?php $fv_fp->_get_checkbox(__('Align', 'fv-wordpress-flowplayer'), array('interface', 'align') ); ?>
           <?php $fv_fp->_get_checkbox(__('Allow Video Uploads', 'fv-wordpress-flowplayer'),'allowuploads', __('Enables the WP Media Library integraton if you want to host videos on your own server', 'fv-wordpress-flowplayer') ); ?>
           <?php $fv_fp->_get_checkbox(__('Autoplay', 'fv-wordpress-flowplayer'), array('interface', 'autoplay') ); ?>
+          <?php $fv_fp->_get_checkbox(__('Preload', 'fv-wordpress-flowplayer'), array('interface', 'preload') ); ?>
           <?php $fv_fp->_get_checkbox(__('Controlbar', 'fv-wordpress-flowplayer'), array('interface', 'controlbar') ); ?>
           <?php $fv_fp->_get_checkbox(__('Embed', 'fv-wordpress-flowplayer'), array('interface', 'embed') ); ?>
           <?php $fv_fp->_get_checkbox(__('Mobile Video', 'fv-wordpress-flowplayer'), array('interface', 'mobile') ); ?>
@@ -1092,6 +1094,7 @@ function fv_flowplayer_admin_skin() {
       'src' => 'https://player.vimeo.com/external/196881410.hd.mp4?s=24645ecff21ff60079fc5b7715a97c00f90c6a18&profile_id=174&oauth2_token_id=3501005',
       'splash' => 'https://i.vimeocdn.com/video/609485450_1280.jpg',
       'autoplay' => 'false',
+      'preload' => 'false',
       'preroll' => 'no',
       'postroll' => 'no',
       'subtitles' =>  plugins_url('images/test-subtitles.vtt',dirname(__FILE__)),
@@ -1519,6 +1522,7 @@ function fv_flowplayer_admin_usage() {
                 	<li><a target="_blank" href="https://foliovision.com/player/basic-setup/post-interface-options"><?php _e('Post Interface Options', 'fv-wordpress-flowplayer'); ?></a></li>
                 	<li><a target="_blank" href="https://foliovision.com/player/basic-setup/alignment-settings"><?php _e('Alignment Settings', 'fv-wordpress-flowplayer'); ?></a></li>
                 	<li><a target="_blank" href="https://foliovision.com/player/basic-setup/autoplay"><?php _e('Autoplay', 'fv-wordpress-flowplayer'); ?></a></li>
+                    <li><a target="_blank" href="https://foliovision.com/player/basic-setup/preload"><?php _e('Preload', 'fv-wordpress-flowplayer'); ?></a></li>
                 	<li><a target="_blank" href="https://foliovision.com/player/basic-setup/customizing-fv-player-skin"><?php _e('Customizing FV Player Skin', 'fv-wordpress-flowplayer'); ?></a></li>
                 	<li><a target="_blank" href="https://foliovision.com/player/basic-setup/managing-sharing-buttons"><?php _e('Sharing Videos on Social Media', 'fv-wordpress-flowplayer'); ?></a></li>
                 	<li><a target="_blank" href="https://foliovision.com/player/basic-setup/customing-email-sharing"><?php _e('Email Sharing', 'fv-wordpress-flowplayer'); ?></a></li>

@@ -33,6 +33,7 @@ class FV_Player_Db_Player {
     $ad_skip, // whether or not to skip ads for this player
     $align, // alignment position
     $autoplay, // whether to autoplay videos on page load
+    $preload, // whether to preload videos on page load
     $controlbar, // whether to show the control bar for this player
     $copy_text, // whether to show DRM text on the player
     $embed, // whether to show embed links for this player
@@ -180,6 +181,13 @@ class FV_Player_Db_Player {
    */
   public function getAutoplay() {
     return $this->autoplay;
+  }
+
+  /**
+   * @return string
+   */
+  public function getPreload() {
+    return $this->preload;
   }
 
   /**
@@ -402,6 +410,7 @@ CREATE TABLE " . self::$db_table_name . " (
   align varchar(7) NOT NULL,
   author bigint(20) unsigned NOT NULL default '0',
   autoplay varchar(7) NOT NULL,
+  preload varchar(7) NOT NULL,
   controlbar varchar(7) NOT NULL,
   copy_text varchar(120) NOT NULL,
   changed_by bigint(20) unsigned NOT NULL default '0',

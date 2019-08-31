@@ -274,6 +274,17 @@ class flowplayer_frontend extends flowplayer
     }
 
     /*
+     *  Preload
+     */
+    $preload = false;  //  todo: should be changed into a property
+    if( $this->_get_option('preload') && $this->aCurArgs['preload'] != 'false'  ) {
+      $preload = true;
+    }
+    if( isset($this->aCurArgs['preload']) && ($this->aCurArgs['preload'] == 'true' || $this->aCurArgs['preload'] == 'on')) {
+      $preload = true;
+    }
+
+    /*
      *  Sticky
      */
     $sticky = false;  //  todo: should be changed into a property
@@ -344,6 +355,10 @@ class flowplayer_frontend extends flowplayer
           if( $autoplay == true ) {
             $this->ret['html'] .= ' autoplay';  
           }
+
+          if( $preload == true ) {
+            $this->ret['html'] .= ' preload';
+          }
           
           if( stripos($width,'%') == false && intval($width) > 0 ) {
             $this->ret['html'] .= ' width="'.$width.'"'; 
@@ -400,7 +415,7 @@ class flowplayer_frontend extends flowplayer
           $bIsAudio = $video->getMetaValue('audio',true);
         }
         
-        $attributes['class'] = 'flowplayer no-brand is-splash';
+        $attributes['class'] = 'flowplayer no-brand '.((empty($this->aCurArgs['preload']) || $this->aCurArgs['preload'] != 'true') && !$this->_get_option('preload') ? 'is-splash' : 'is-poster');
         
         if( !empty($this->aCurArgs['skin']) ) {
           $skin = 'skin-'.$this->aCurArgs['skin'];
@@ -424,7 +439,11 @@ class flowplayer_frontend extends flowplayer
       
         if( $autoplay ) {
           $attributes['data-fvautoplay'] = 'true';
-        } 
+        }
+
+        if( $preload ) {
+          $attributes['data-fvpreload'] = 'true';
+        }
         
         if( $sticky ) {
           $attributes['data-fvsticky'] = 'true';
@@ -1243,6 +1262,7 @@ HTML;
       $tags['div']['data-fv_loop'] = true;
       $tags['div']['data-fv_redirect'] = true;
       $tags['div']['data-fvautoplay'] = true;
+      $tags['div']['data-fvpreload'] = true;
       $tags['div']['data-fvsticky'] = true;
       $tags['div']['data-fullscreen'] = true;
       $tags['div']['data-live'] = true;

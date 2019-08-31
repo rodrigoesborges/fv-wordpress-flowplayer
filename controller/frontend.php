@@ -129,6 +129,7 @@ function flowplayer_content( $content ) {
     unset($arguments['width']);
     unset($arguments['height']);
     unset($arguments['autoplay']);
+    unset($arguments['preload']);
     unset($arguments['splash']);
     unset($arguments['splashend']);
     unset($arguments['popup']);
@@ -160,6 +161,19 @@ function flowplayer_content( $content ) {
         preg_match("/autoplay=([A-Za-z]*)/i",$ntag,$tmp);
       if (isset($tmp[1]))
         $arguments['autoplay'] = $tmp[1];
+    }
+
+    //search for preload
+    preg_match("/[\s]+preload([\s]|])+/i",$ntag,$tmp);
+    if (isset($tmp[0])){
+      $arguments['preload'] = true;
+    }
+    else {
+      preg_match("/preload='([A-Za-z]*)'/i",$ntag,$tmp);
+      if ( $tmp[1] == NULL )
+        preg_match("/preload=([A-Za-z]*)/i",$ntag,$tmp);
+      if (isset($tmp[1]))
+        $arguments['preload'] = $tmp[1];
     }
     
     //search for popup in quotes

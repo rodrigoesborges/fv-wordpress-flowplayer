@@ -98,6 +98,7 @@ function flowplayer_content_handle( $atts, $content = null, $tag = false ) {
     'admin_warning' => '',
     'align' => '',
     'autoplay' => '',
+    'preload' => '',
     'caption' => '',
     'caption_html' => '',
     'controlbar' => '',
@@ -268,7 +269,7 @@ function fv_flowplayer_optimizepress_bridge( $input ) {
   
   if( $vars['auto_play'] == 'Y' ) {
     $shortcode .= ' autoplay="true"';
-  }  
+  }
 
   
   $shortcode .= ' width="'.$vars['width'].'"';
