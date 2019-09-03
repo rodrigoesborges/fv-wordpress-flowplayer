@@ -59,6 +59,36 @@ abstract class FV_Player_UnitTestCase extends WP_UnitTestCase {
     return $html;
   }
 
+  public static function remove_ids_and_urls($input) {
+    $output = preg_replace(
+      array(
+        '/"id":\d{1,}/m',
+        '/\?ver=[^&\'"]+([\'"])/m',
+        '/wp-content\/plugins\/[^"<]+(["<])/m',
+        '/With the Verbose setting Vimeo API calls are logged into [^<]+</m',
+        '/convert_(vimeo|youtube)=[^\']+\'/m',
+        '/fv_player_embed=[^&]+&/m',
+        '/fv-player-vimeo-[^<]+</m',
+        '/<video:description>[^<]+<\/video:description>/m',
+        '/(\?|&)p=\d{1,}/m'
+      ),
+      array(
+        '"id":-regex_replaced-',
+        'ver=-regex_replaced-$1',
+        'wp-content\\/plugins\\/-regex-replaced-$1',
+        'With the Verbose setting Vimeo API calls are logged into -regex-replaced-<',
+        'convert_$1=-regex-replaced-\'',
+        'fv_player_embed=-regex-replaced-&',
+        'fv-player-vimeo--regex-replaced-<',
+        '<video:description>-regex-replaced-</video:description>',
+        '$1p=-regex-replaced-'
+      ),
+      $input
+    );
+
+    return $output;
+  }
+
   // we need to set up PRO player with an appropriate key, or the PRO player won't work
   public static function wpSetUpBeforeClass() {
     global $fv_fp;

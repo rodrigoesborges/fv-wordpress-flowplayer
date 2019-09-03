@@ -46,7 +46,7 @@ final class FV_Player_ShortcodeTestCase extends FV_Player_UnitTestCase {
     wp_footer();
     $output = ob_get_clean();
     
-    $this->assertEquals( $this->fix_newlines(file_get_contents(dirname(__FILE__).'/testSimpleShortcode.html')), $this->fix_newlines($output) );
+    $this->assertEquals( $this->remove_ids_and_urls($this->fix_newlines(file_get_contents(dirname(__FILE__).'/testSimpleShortcode.html'))), $this->remove_ids_and_urls($this->fix_newlines($output)) );
   }
 
 }
