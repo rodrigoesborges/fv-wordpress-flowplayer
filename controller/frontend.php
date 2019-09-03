@@ -498,7 +498,7 @@ add_filter( 'the_content', 'fv_flowplayer_the_content', 0 );
 
 
 function fv_flowplayer_shortfcode_fix_attrs( $aMatch ) {
-  $aMatch[0] = preg_replace_callback( '!(?:ad|popup)="(.*?[^\\\])"!', 'fv_flowplayer_shortfcode_fix_attr', $aMatch[0] );
+  $aMatch[0] = preg_replace_callback( '!\b(?:ad|popup)="(.*?[^\\\])"!', 'fv_flowplayer_shortfcode_fix_attr', $aMatch[0] );
   return $aMatch[0];
 }
 
