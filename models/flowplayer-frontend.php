@@ -414,8 +414,8 @@ class flowplayer_frontend extends flowplayer
         if( !$bIsAudio && $video = $this->current_video() ) {          
           $bIsAudio = $video->getMetaValue('audio',true);
         }
-        
-        $attributes['class'] = 'flowplayer no-brand '.((empty($this->aCurArgs['preload']) || $this->aCurArgs['preload'] != 'true') && !$this->_get_option('preload') ? 'is-splash' : 'is-poster');
+
+        $attributes['class'] = 'flowplayer no-brand '.((empty($this->aCurArgs['preload']) || ($this->aCurArgs['preload'] != 'true' && $this->aCurArgs['preload'] != 'on')) && !$this->_get_option('preload') ? 'is-splash' : 'is-poster');
         
         if( !empty($this->aCurArgs['skin']) ) {
           $skin = 'skin-'.$this->aCurArgs['skin'];
