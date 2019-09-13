@@ -499,6 +499,7 @@ class flowplayer extends FV_Wordpress_Flowplayer_Plugin_Private {
     if( !isset( $conf['autoplay'] ) ) $conf['autoplay'] = 'false';
     if( !isset( $conf['preload'] ) ) $conf['preload'] = 'false';
     if( !isset( $conf['googleanalytics'] ) ) $conf['googleanalytics'] = 'false';
+    if( !isset( $conf['chromecast'] ) ) $conf['chromecast'] = 'false';
     if( !isset( $conf['key'] ) ) $conf['key'] = 'false';
     if( !isset( $conf['logo'] ) ) $conf['logo'] = 'false';
     if( !isset( $conf['rtmp'] ) ) $conf['rtmp'] = 'false';
@@ -628,7 +629,6 @@ class flowplayer extends FV_Wordpress_Flowplayer_Plugin_Private {
 
   public function _get_option($key) {    
     $conf = $this->conf;
-
     $value = false;
     if( is_array($key) && count($key) === 2) {
       if( isset($conf[$key[0]]) && isset($conf[$key[0]][$key[1]]) ) {
