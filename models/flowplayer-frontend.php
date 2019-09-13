@@ -289,6 +289,10 @@ class flowplayer_frontend extends flowplayer
     if( isset($this->aCurArgs['preload']) && ($this->aCurArgs['preload'] == 'true' || $this->aCurArgs['preload'] == 'on')) {
       $preload = true;
     }
+    
+    if( $autoplay ) {
+      $preload = false;
+    }
 
     /*
      *  Sticky
@@ -446,7 +450,11 @@ class flowplayer_frontend extends flowplayer
         
         if( $autoplay ) {
           $attributes['data-fvautoplay'] = $autoplay;
-        } 
+        }
+        
+        if( $preload ) {
+          $attributes['data-fvpreload'] = 'true';
+        }
 
         if( $sticky ) {
           $attributes['data-fvsticky'] = 'true';
