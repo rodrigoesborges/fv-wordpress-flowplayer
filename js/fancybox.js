@@ -282,3 +282,16 @@ jQuery(document).on('click', '.fp-playlist-external[rel$=_lightbox_starter] a', 
   fv_fancybox_check_size();
   return false;
 });
+
+( function($) {
+  var loading = false;
+  $.fancybox.defaults.onInit = function(e,instance) {
+    $( $.fancybox.getInstance().$refs.container ).hide();
+    if( loading ) return;
+    loading = true;
+    $.get(fv_player_lightbox.fancybox_css, function(){
+      $('<link>', {rel:'stylesheet', type:'text/css', 'href':fv_player_lightbox.fancybox_css}).appendTo('head');
+      $( $.fancybox.getInstance().$refs.container ).show();
+    });
+  }
+})(jQuery);

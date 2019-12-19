@@ -4,8 +4,6 @@ class FV_Player_lightbox {
 
   private $lightboxHtml;
   
-  public $bCSSLoaded = false;
-  
   public $bLoad = false;
   
   public function __construct() {
@@ -37,18 +35,6 @@ class FV_Player_lightbox {
     add_action('wp_footer', array( $this, 'remove_other_fancybox' ), 19 );
     
     add_filter( 'shortcode_atts_gallery', array( $this, 'improve_galleries' ) );
-    
-    add_action( 'wp_enqueue_scripts', array( $this, 'css_enqueue' ), 999 );
-  }
-  
-  function css_enqueue( $force ) {
-    global $fv_fp;
-    if( !$force && !$fv_fp->_get_option('lightbox_images') && !$fv_fp->_get_option('lightbox_force') ) return;
-    
-    $bCSSLoaded = true;
-    
-    global $fv_wp_flowplayer_ver;
-    wp_enqueue_style( 'fv_player_lightbox', FV_FP_RELATIVE_PATH . '/css/fancybox.css', array(), $fv_wp_flowplayer_ver );
   }
 
   function conf_defaults($conf){
