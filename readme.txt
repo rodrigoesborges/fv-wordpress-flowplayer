@@ -357,6 +357,56 @@ Thank you for being part of the HMTL 5 mobile video revolution!
 
 == Changelog ==
 
+= 7.4.14.727 - 2020/01/28 =
+
+* HLS.js - enabling on iOS 13 and Safari above version 8
+* Bugfix - CSS - avoiding borders on splash images
+* Bugfix - Editor - Preview fix when using Lazy Load by WP Rocket
+* Bugfix - Sharing - fixing the custom URL and title in frontend, fixing link to Tweet
+* Bugfix - Splash screen code cleanup for FV Player Pro
+
+= 7.4.9.727 - 2019/12/12 =
+
+* AWS - adding new regions
+* New setting - Force HD Streaming for websites who prefer video quality over buffering speed
+* Playlist - add sort="reverse" to shortcode to shows the playlist in reverse item order
+* Bugfix - invisible menus trapping click events below the player on mobile
+* Bugfix - Playlist menu - not adding when there is a single video with ads
+* Bugfix - S3 Bucket browser - fix for missing styling
+* Bugfix - Vimeo/MPEG-DASH mute button fix
+
+= 7.4.8.727 - 2019/10/23 =
+
+* Playlist menu - fixing to not include the FV Player Pro Video Ads
+
+= 7.4.7.727 - 2019/10/22 =
+
+* Compatibility - Elementor fixes
+* Editor - removing playlist name field for single videos
+* FV Player wp-admin Screen - Screen Option to show player author
+* FV Player wp-admin Screen - only showing players for which the user has edit permissions
+* Lightbox - compatibility if your website already loads Fancybox 2
+* Lightbox - sizing fix for single video - respect desired size
+* HLS - going back to HLS.js 0.11.0 library due to encrypted HLSv4 issues
+* Maintenance - split the master JS file into modules for development, kept a single fv-flowplayer.min.js for normal use
+* MPEG-DASH - upgrading Dash.js to 3.0.0
+* Translations - adding hooks for the playlist repeat button
+* Video Speed - removing bad 0.25x speed when 0.5x speed step is set
+* Video Checker - code refactoring, making it work in FV Player Editor
+
+= 7.4.6.727 - 2019/09/17 =
+
+* Chromecast - disabled by default for new installs, use the "Enable google chromecast" setting
+* HLS - updated the HLS.js library
+* Muted autoplay - adding the global and per-player setting
+* Subtitles - remembering the last subtitle language selected and using that
+* Bugfix - Database - cloning a player should omit the "Embedded on" information
+* Bugfix - Editor - bad position of the video meta data loading indicator
+* Bugfix - Polaroid and Season playlist styles - fix when you exit fullscreen too early
+* Bugfix - Splash screen - covering the video during playback due to theme CSS with !important rules
+* Bugfix - Video Links - issues when clicking different links pointing to a single video
+* Bugfix - Volume bar - fixing what happens on mobile when you tap video to pause after changing volume
+
 = 7.4.2.727 - 2019/08/28 =
 
 * Google Analytics - using video titles rather than file names

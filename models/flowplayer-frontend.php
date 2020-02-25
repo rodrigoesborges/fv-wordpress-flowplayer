@@ -36,7 +36,7 @@ class flowplayer_frontend extends flowplayer
   
   var $aPopups = array();
   
-  var $aCurArgs = false;
+  var $aCurArgs = array();
   
   var $sHTMLAfter = false;
   
@@ -80,7 +80,7 @@ class flowplayer_frontend extends flowplayer
 
     $this->hash = md5($media.$this->_salt()); //  unique player id
     // todo: harmonize this, the media arg was a bad idea in the first place
-    if( !empty($media) && $media != $this->aCurArgs['src'] ) {
+    if( !empty($media) ) {
       $this->aCurArgs['src'] = $media;
     }
     $this->aCurArgs = apply_filters( 'fv_flowplayer_args_pre', $args );
@@ -142,7 +142,7 @@ class flowplayer_frontend extends flowplayer
     $src2 = ( isset($this->aCurArgs['src2']) && !empty($this->aCurArgs['src2']) ) ? trim($this->aCurArgs['src2']) : false;
 
     $splash_img = $this->get_splash();
-
+    
     foreach( array( $media, $src1, $src2 ) AS $media_item ) {
       if( stripos( $media_item, 'rtmp://' ) === 0 ) {
         $rtmp = $media_item;
@@ -263,14 +263,20 @@ class flowplayer_frontend extends flowplayer
     
     
     /*
-     *  Autoplay
+     *  Autoplay, in the older FV Player versions this setting was just true/false and that creates a ton of issues
      */
-    $autoplay = false;  //  todo: should be changed into a property
-    if( $this->_get_option('autoplay') && $this->aCurArgs['autoplay'] != 'false'  ) {
+    $autoplay = false;
+    if( $this->_get_option('autoplay') == 'true' && $this->aCurArgs['autoplay'] != 'false'  ) {
       $autoplay = true;
-    }  
+    } else if ( $this->_get_option('autoplay') == 'muted' && $this->aCurArgs['autoplay'] != 'false' ) {
+      $autoplay = 'muted';
+    }
+    
     if( isset($this->aCurArgs['autoplay']) && ($this->aCurArgs['autoplay'] == 'true' || $this->aCurArgs['autoplay'] == 'on')) {
       $autoplay = true;
+    }
+    if( isset($this->aCurArgs['autoplay']) && ($this->aCurArgs['autoplay'] == 'muted')) {
+      $autoplay = 'muted';
     }
 
     /*
@@ -341,7 +347,7 @@ class flowplayer_frontend extends flowplayer
             $this->ret['html'] .= ' poster="'.flowplayer::get_encoded_url($splash_img).'"';
           } 
           
-          if( $autoplay == true ) {
+          if( $autoplay ) {
             $this->ret['html'] .= ' autoplay';  
           }
           
@@ -422,10 +428,11 @@ class flowplayer_frontend extends flowplayer
           $attributes['class'] .= ' has-playlist has-playlist-'.$this->aCurArgs['liststyle'];
         }
       
-        if( $autoplay ) {
-          $attributes['data-fvautoplay'] = 'true';
-        } 
         
+        if( $autoplay ) {
+          $attributes['data-fvautoplay'] = $autoplay;
+        } 
+
         if( $sticky ) {
           $attributes['data-fvsticky'] = 'true';
         }
@@ -502,13 +509,8 @@ class flowplayer_frontend extends flowplayer
         if( /*count($aPlaylistItems) == 0 &&*/ $rtmp_server) {
           $attributes['data-rtmp'] = $rtmp_server;
         }
-        
-        if( !$bIsAudio && empty($this->aCurArgs['checker']) && !$this->_get_option('disable_videochecker') && current_user_can('manage_options') ) {
-          $this->get_video_checker_media($attributes, $media, $src1, $src2, $rtmp);
-        }
-    
 
-        if( !$this->_get_option('allowfullscreen') ) {
+        if( !$this->_get_option('allowfullscreen') || isset($this->aCurArgs['fullscreen']) && $this->aCurArgs['fullscreen'] == 'false' ) {
           $attributes['data-fullscreen'] = 'false';
         }
         
@@ -525,6 +527,15 @@ class flowplayer_frontend extends flowplayer
         
         if( isset($this->aCurArgs['dvr']) && $this->aCurArgs['dvr'] == 'true' ) {
           $attributes['data-dvr'] = 'true';
+        }
+
+        if( isset($this->aCurArgs['hd_streaming']) ) {
+          $attributes['data-hd_streaming'] = $this->aCurArgs['hd_streaming'];
+        }
+
+        if( isset($this->aCurArgs['volume']) ) {
+          $attributes['data-volume'] = floatval($this->aCurArgs['volume']);
+          $attributes['class'] .= ' no-volume';
         }
 
         $playlist = '';
@@ -843,8 +854,8 @@ class flowplayer_frontend extends flowplayer
   
   
   function get_popup_code() {
-    if ( isset($this->aCurArgs['id']) && !isset($this->aCurArgs['end_actions'])) {
-      return;
+    if( !empty($this->aCurArgs['end_actions']) && $this->aCurArgs['end_actions'] == 'no') {
+      return false;
     }
 
     // static and e-mail popups share the same parameter in old non-DB shortcode
@@ -977,8 +988,8 @@ class flowplayer_frontend extends flowplayer
     } else if( $this->_get_option('splash') ) {
       $splash_img = $this->_get_option('splash');
     }    
-    
-    $splash_img = apply_filters( 'fv_flowplayer_splash', $splash_img, $this );
+
+    $splash_img = apply_filters( 'fv_flowplayer_splash', $splash_img, !empty($this->aCurArgs['src']) ? $this->aCurArgs['src'] : false );
 
     return $splash_img;
   }
@@ -1095,36 +1106,6 @@ class flowplayer_frontend extends flowplayer
   }
   
   
-  function get_video_checker_media($attributes, $media, $src1, $src2, $rtmp) {
-
-    if( current_user_can('manage_options') && $this->ajax_count < 100 && !$this->_get_option('disable_videochecker') && ( $this->_get_option('video_checker_agreement') || $this->_get_option('key_automatic') ) ) {
-      $this->ajax_count++;
-      
-      if( stripos($rtmp,'rtmp://') === false && $rtmp ) {
-        list( $rtmp_server, $rtmp ) = $this->get_rtmp_server($rtmp);
-        $rtmp = trailingslashit($rtmp_server).$rtmp;
-      }
-    
-      $aTest_media = array();
-      foreach( array( $media, $src1, $src2, $rtmp ) AS $media_item ) {
-        if( $media_item ) {
-          $aTest_media[] = $this->get_video_src( $media_item, array( 'dynamic' => true ) );
-          //break;
-        } 
-      }
-      
-      if( !empty($this->aCurArgs['mobile']) ) {
-        $aTest_media[] = $this->get_video_src($this->aCurArgs['mobile'], array( 'dynamic' => true ) );
-      }
-
-      if( isset($aTest_media) && count($aTest_media) > 0 ) {
-        $this->ret['script']['fv_flowplayer_admin_test_media'][$this->hash] = $aTest_media;
-      }
-    }            
-
-  }
-  
-  
   function get_sharing_html() {
     global $post;
     
@@ -1156,7 +1137,7 @@ class flowplayer_frontend extends flowplayer
           
     $sHTMLSharing = '<ul class="fvp-sharing">
     <li><a class="sharing-facebook" href="https://www.facebook.com/sharer/sharer.php?u=' . $sPermalink . '" target="_blank"></a></li>
-    <li><a class="sharing-twitter" href="https://twitter.com/home?status=' . $sTitle . $sPermalink . '" target="_blank"></a></li>
+    <li><a class="sharing-twitter" href="https://twitter.com/intent/tweet?text=' . $sTitle .'&url='. $sPermalink . '" target="_blank"></a></li>
     <li><a class="sharing-email" href="mailto:?body=' . $sMail . '" target="_blank"></a></li></ul>';
     
     if( isset($post) && isset($post->ID) ) {
