@@ -1008,6 +1008,7 @@ function fv_wp_flowplayer_edit() {
   jQuery("[name=fv_wp_flowplayer_field_caption]").each( function() { jQuery(this).val( '' ) } );
   jQuery("[name=fv_wp_flowplayer_field_splash_text]").each( function() { jQuery(this).val( '' ) } );
   jQuery(".fv_player_field_insert-button").attr( 'value', 'Insert' );
+  jQuery('.fv-player-tab-embeds table tr td').html('');
   
   var field = jQuery(fv_player_editor_button_clicked).parents('.fv-player-editor-wrapper, .fv-player-gutenberg').find('.fv-player-editor-field');
   if( field.length || jQuery('#widget-widget_fvplayer-'+FVFP_sWidgetId+'-text').length){
