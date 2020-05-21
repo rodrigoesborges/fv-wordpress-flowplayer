@@ -1081,7 +1081,19 @@ class flowplayer_frontend extends flowplayer
     $aStartend = !empty($this->aCurArgs['startend']) ? explode(";",$this->aCurArgs['startend']) : array();  //  todo: somehow move to Pro?
     
     foreach( $aPlaylistItems AS $key => $aSrc ) {
-      if( !empty($aStartend[$key]) ) $this->aCurArgs['startend'] = $aStartend[$key];
+      if( !empty($aStartend[$key]) ) {
+        $this->aCurArgs['startend'] = $aStartend[$key];
+      } else if( !empty($this->aCurArgs['start']) || !empty($this->aCurArgs['end']) ) {
+        $this->aCurArgs['start'] = '00:00';
+
+        if (!empty($aPlaylistItems[$key]['fv_start'])) {
+          $this->aCurArgs['start'] = $aPlaylistItems[$key]['fv_start'];
+        }
+
+        if (!empty($aPlaylistItems[$key]['fv_end'])) {
+          $this->aCurArgs['end'] = $aPlaylistItems[$key]['fv_end'];
+        }
+      }
       
       unset($this->aCurArgs['id']);
       unset($this->aCurArgs['playlist']);
