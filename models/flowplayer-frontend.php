@@ -1058,7 +1058,7 @@ class flowplayer_frontend extends flowplayer
     return $aSubtitles;
   }
   
-  
+  // used to generate tabbed playlist (each video is actually a new player, which is a bit of a hack really)
   function get_tabs($aPlaylistItems,$aSplashScreens,$aCaptions,$width) {
     global $post;
     
@@ -1081,15 +1081,19 @@ class flowplayer_frontend extends flowplayer
     $aStartend = !empty($this->aCurArgs['startend']) ? explode(";",$this->aCurArgs['startend']) : array();  //  todo: somehow move to Pro?
     
     foreach( $aPlaylistItems AS $key => $aSrc ) {
+      // when "startend" parameter from the old manual (non-db) shortcode is used, parse it here
       if( !empty($aStartend[$key]) ) {
         $this->aCurArgs['startend'] = $aStartend[$key];
       } else if( !empty($this->aCurArgs['start']) || !empty($this->aCurArgs['end']) ) {
+        // db-based shortcode used, check for start & end times and update the $this->aCurArgs array
         $this->aCurArgs['start'] = '00:00';
 
+        // we might not have a start time set, so in that case, we'll start at 00:00
         if (!empty($aPlaylistItems[$key]['fv_start'])) {
           $this->aCurArgs['start'] = $aPlaylistItems[$key]['fv_start'];
         }
 
+        // end time is also optional
         if (!empty($aPlaylistItems[$key]['fv_end'])) {
           $this->aCurArgs['end'] = $aPlaylistItems[$key]['fv_end'];
         }
