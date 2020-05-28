@@ -1086,9 +1086,6 @@ class flowplayer_frontend extends flowplayer
         $this->aCurArgs['startend'] = $aStartend[$key];
       } else if( !empty($this->aCurArgs['start']) || !empty($this->aCurArgs['end']) ) {
         // db-based shortcode used, check for start & end times and update the $this->aCurArgs array
-        $this->aCurArgs['start'] = '00:00';
-
-        // we might not have a start time set, so in that case, we'll start at 00:00
         if (!empty($aPlaylistItems[$key]['fv_start'])) {
           $this->aCurArgs['start'] = $aPlaylistItems[$key]['fv_start'];
         }
